@@ -29,3 +29,13 @@ def test_signup_rejects_duplicate_registration():
 
     assert response.status_code == 400
     assert "already signed up" in response.json()["detail"].lower()
+
+
+def test_unregister_missing_participant_returns_404():
+    activity_name = "Chess Club"
+    email = "notregistered@mergington.edu"
+
+    response = client.delete(f"/activities/{activity_name}/participants?email={email}")
+
+    assert response.status_code == 404
+    assert "not signed up" in response.json()["detail"].lower()
